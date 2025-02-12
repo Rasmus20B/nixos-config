@@ -1,31 +1,54 @@
 { config, pkgs, lib, inputs, ... }:
 
 {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
 
+  nixpkgs.config.allowUnfree = true;
   home.username = "merimak";
   home.homeDirectory = "/home/merimak";
 
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "24.05"; # Please read the comment before changing.
+  home.stateVersion = "24.05";
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
   home.packages = with pkgs; [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
+    # Compilers
     cargo
-    clang
+    gcc_latest
+    clang19Stdenv
+    llvm_19
+    lldb_19
+
+    # Build systems
+    cmake
+    gnumake
+
+    # libs
+    glibc
+
+    # Interpreters
+    python3
+
+    # Wayland Environment
     pkgs.waybar
     rofi-wayland
     fastfetch
+
+    # AI 
+    lmstudio
+
+    # Debugging
+    rr
+    gdb
+    pkgs.valgrind
+
+    # Useful CLI
+    file
+    mlocate
+    fzf
+
+    pavucontrol
+    pamixer
+    alsa-utils
+
+    pkgs.wofi
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -56,27 +79,10 @@
     # '';
   };
 
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/merimak/etc/profile.d/hm-session-vars.sh
-  #
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = "nvim";
   };
 
-  # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   programs.zsh = {
     enable = true;
@@ -86,7 +92,20 @@
     };
   };
 
-  programs.kitty.enable = true;
+  programs.kitty = {
+    enable = true;
+    keybindings = {
+      "alt+1" = "goto_tab 1";
+      "alt+2" = "goto_tab 2";
+      "alt+3" = "goto_tab 3";
+      "alt+4" = "goto_tab 4";
+      "alt+5" = "goto_tab 5";
+    };
+
+    settings = {
+      allow_remote_control = true;
+    };
+  };
 
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [
@@ -102,62 +121,17 @@
 
   lib.programs.hyprland.enable = true;
 
+  lib.programs.file.enable = true;
+
+  lib.programs.lmstudio = {
+    enable = true;
+  };
   programs.git = {
     enable = true;
     userName = "JT";
     userEmail = "jmtateossian50b@gmail.com";
     extraConfig = {
       init.defaultBranch = "main";
-    };
-  };
-
-  wayland.windowManager.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-    settings = {
-      "$terminal" = "kitty";
-      "$mod" = "SUPER";
-      bind = [
-	  "$mod, Q, exec, kitty"
-	  "$mod, S, exec, rofi -show drun -show-icons"
-
-	  "$mod, h, movefocus, l"
-	  "$mod, j, movefocus, d"
-	  "$mod, k, movefocus, u"
-	  "$mod, l, movefocus, r"
-
-	  "{$mod}SHIFT, h, movewindow, l"
-	  "{$mod}SHIFT, j, movewindow, d"
-	  "{$mod}SHIFT, k, movewindow, u"
-	  "{$mod}SHIFT, l, movewindow, r"
-
-	  "$mod, 1, workspace, 1"
-	  "$mod, 2, workspace, 2"
-	  "$mod, 3, workspace, 3"
-	  "$mod, 4, workspace, 4"
-	  "$mod, 5, workspace, 5"
-	  "$mod, 6, workspace, 6"
-	  "$mod, 7, workspace, 7"
-	  "$mod, 8, workspace, 8"
-	  "$mod, 9, workspace, 9"
-
-	  "{$mod}SHIFT, 1, movetoworkspace, 1"
-	  "{$mod}SHIFT, 2, movetoworkspace, 2"
-	  "{$mod}SHIFT, 3, movetoworkspace, 3"
-	  "{$mod}SHIFT, 4, movetoworkspace, 4"
-	  "{$mod}SHIFT, 5, movetoworkspace, 5"
-	  "{$mod}SHIFT, 6, movetoworkspace, 6"
-	  "{$mod}SHIFT, 7, movetoworkspace, 7"
-	  "{$mod}SHIFT, 8, movetoworkspace, 8"
-	  "{$mod}SHIFT, 9, movetoworkspace, 9"
-      ];
-
-      exec-once = [
-	"waybar &"
-	"pipewire &"
-	"pipewire-pulse &"
-	"dunst"
-      ];
     };
   };
 }

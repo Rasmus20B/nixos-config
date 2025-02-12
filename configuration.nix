@@ -58,7 +58,7 @@
     isNormalUser = true;
     description = "merimak";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
+    packages = [
     ];
   };
 
@@ -68,12 +68,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    vim
     wget
     git
-
-    #pkgs.waybar
-    #rofi-wayland
 
     dunst
     libnotify
@@ -106,10 +103,17 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+    };
+  };
+
+  programs.steam.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
@@ -128,6 +132,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     jack.enable = true;
+    pulse.enable = true;
   };
 
   hardware.graphics.enable = true;

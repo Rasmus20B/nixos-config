@@ -48,10 +48,11 @@
         inherit pkgs;
         modules = [ 
 	  nixvim.homeManagerModules.nixvim
+          ./modules/nixvim
           ./home.nix 
-	  ./modules/nixvim.nix
 	  ./modules/waybar.nix
 	  ./modules/lazygit.nix
+          ./modules/hyprland.nix
         ];
       };
     };

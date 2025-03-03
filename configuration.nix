@@ -110,6 +110,8 @@
     };
   };
 
+  services.blueman.enable = true;
+
   programs.steam.enable = true;
 
   # Open ports in the firewall.

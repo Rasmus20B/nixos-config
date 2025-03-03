@@ -54,6 +54,12 @@
                 ),
                 {'i', 's'}
               )";
+            "<CR>" =
+              "cmp.mapping.confirm {
+                behavior = cmp.ConfirmBehavior.Insert,
+                select = true,
+              }
+            ";
             "<S-Tab>" =
               "cmp.mapping(
                 cmp.mapping.select_prev_item(

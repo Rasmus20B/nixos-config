@@ -15,6 +15,8 @@
     clang19Stdenv
     llvm_19
     lldb_19
+    pkgs.protobuf
+    pkgs.protoc-gen-rust
 
     # Build systems
     cmake
@@ -43,6 +45,7 @@
     file
     mlocate
     fzf
+    wl-clipboard
 
     pavucontrol
     pamixer
